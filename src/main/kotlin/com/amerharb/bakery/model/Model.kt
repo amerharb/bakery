@@ -17,18 +17,19 @@ data class BakeryProducts(val products: List<Product>) {
     data class Product(val item: Item, val packs: List<Pack>)
 }
 
-data class InputOrder(val inputList: List<InputLine>) {
-    data class InputLine(val qty: Int, val item: Item)
+data class InputOrder(val inputList: List<Line>) {
+    data class Line(val qty: Int, val item: Item)
 }
 
 data class Shipment(val outputList: List<Line>) {
-    data class Line(val qtyPacks: List<QtyPack>) {
+    data class Line(val inputLine: InputOrder.Line, val qtyPacks: List<QtyPack>) {
         val value: BigDecimal
             get() {
                 var bd = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)
-                qtyPacks.forEach { bd = bd.add(it.pack.price.multiply(it.qty))}
+                qtyPacks.forEach { bd = bd.add(it.pack.price.multiply(it.qty)) }
                 return bd
             }
+
         data class QtyPack(val qty: Int, val pack: Pack)
     }
 }
