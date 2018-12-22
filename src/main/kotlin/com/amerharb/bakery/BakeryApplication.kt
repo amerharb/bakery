@@ -1,5 +1,9 @@
 package com.amerharb.bakery
 
+object BakeryApplication
+
 fun main() {
-    print("Hello World, Bakery Application")
+    println("Hello World, Bakery Application")
+    val inputText = BakeryApplication::class.java.getResource("Input").readText()
+    println(inputText)
 }
