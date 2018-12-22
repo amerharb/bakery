@@ -4,11 +4,13 @@ object BakeryApplication
 
 fun main() {
     println("Hello World, Bakery Application")
-    val inputText = BakeryApplication::class.java.getResource("Input").readText()
     val products = BakeryProductsFactory.getHardCoded()
     println("BakeryProductsFactory is:")
     println(products)
-    println("------------------------------")
-    println("the input is:")
+    println()
+    val inputText = BakeryApplication::class.java.getResource("Input").readText()
+    println("the input text is:")
     println(inputText)
+    val inputOrder = InputOrderFactory.fromText(products, inputText)
+    println(inputOrder)
 }

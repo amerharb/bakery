@@ -8,6 +8,10 @@ data class Item(val name: String, val code: String)
 data class Pack(val qty: Int, val price: BigDecimal)
 
 data class BakeryProducts(val products: List<Product>) {
+    fun getItem(codeText: String): Item {
+        return products.first { it.item.code == codeText }.item
+    }
+
     data class Product(val item: Item, val packs: List<Pack>)
 }
 
