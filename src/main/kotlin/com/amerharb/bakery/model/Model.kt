@@ -1,6 +1,7 @@
 package com.amerharb.bakery.model
 
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 val CURRENCY_SYMBOL = "$"
 
@@ -18,4 +19,23 @@ data class BakeryProducts(val products: List<Product>) {
 
 data class InputOrder(val inputList: List<InputLine>) {
     data class InputLine(val qty: Int, val item: Item)
+}
+
+data class Shippment(val outputList: List<Line>) {
+    data class Line(val qtyPacks: List<QtyPack>) {
+        val value: BigDecimal
+            get() {
+                var d = 0.0
+                qtyPacks.forEach { d += it.value.toDouble() }
+                return BigDecimal(d).setScale(2, RoundingMode.HALF_UP)
+            }
+        data class QtyPack(val qty: Int, val packs: Pack) {
+            val value: BigDecimal
+                get() = packs.price.multiply(qty)
+        }
+    }
+}
+
+private fun BigDecimal.multiply(i: Int): BigDecimal {
+    return this.multiply(BigDecimal(i)).setScale(2, RoundingMode.HALF_UP)
 }
