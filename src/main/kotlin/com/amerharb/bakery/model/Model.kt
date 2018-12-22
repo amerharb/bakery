@@ -21,18 +21,15 @@ data class InputOrder(val inputList: List<InputLine>) {
     data class InputLine(val qty: Int, val item: Item)
 }
 
-data class Shippment(val outputList: List<Line>) {
+data class Shipment(val outputList: List<Line>) {
     data class Line(val qtyPacks: List<QtyPack>) {
         val value: BigDecimal
             get() {
-                var d = 0.0
-                qtyPacks.forEach { d += it.value.toDouble() }
-                return BigDecimal(d).setScale(2, RoundingMode.HALF_UP)
+                var bd = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)
+                qtyPacks.forEach { bd = bd.add(it.pack.price.multiply(it.qty))}
+                return bd
             }
-        data class QtyPack(val qty: Int, val packs: Pack) {
-            val value: BigDecimal
-                get() = packs.price.multiply(qty)
-        }
+        data class QtyPack(val qty: Int, val pack: Pack)
     }
 }
 
