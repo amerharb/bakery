@@ -9,6 +9,7 @@ data class Pack(val qty: Int, val price: BigDecimal)
 
 data class BakeryProducts(val products: List<Product>) {
     fun getItem(codeText: String): Item {
+        //TODO: catch exception: java.util.NoSuchElementException in case the codeText not found
         return products.first { it.item.code == codeText }.item
     }
 

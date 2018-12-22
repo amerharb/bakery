@@ -13,4 +13,5 @@ fun main() {
     println(inputText)
     val inputOrder = InputOrderFactory.fromText(products, inputText)
     println(inputOrder)
+
 }
