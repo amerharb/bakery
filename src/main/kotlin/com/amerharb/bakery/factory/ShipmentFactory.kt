@@ -3,9 +3,9 @@ package com.amerharb.bakery.factory
 import com.amerharb.bakery.exceptions.BakeryInvalidPacksSizesException
 import com.amerharb.bakery.model.*
 
-object ShippmentFactory {
+object ShipmentFactory {
 
-    fun shipment(bakeryProducts: BakeryProducts, inputOrder: Order): Shipment {
+    fun getShipment(bakeryProducts: BakeryProducts, inputOrder: Order): Shipment {
         val shipmentLineList = ArrayList<Shipment.Line>()
         for (inputLine in inputOrder.inputList) {
             val packsSorted = bakeryProducts.products.first { it.item == inputLine.item }.packs.sortedByDescending { it.qty }

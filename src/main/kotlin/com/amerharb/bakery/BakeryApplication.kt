@@ -2,7 +2,7 @@ package com.amerharb.bakery
 
 import com.amerharb.bakery.factory.BakeryProductsFactory
 import com.amerharb.bakery.factory.OrderFactory
-import com.amerharb.bakery.factory.ShippmentFactory
+import com.amerharb.bakery.factory.ShipmentFactory
 
 object BakeryApplication
 
@@ -27,13 +27,13 @@ fun main() {
     println()
 
     println("calculating Shipment Object ...")
-    println("shipment object is:")
-    val shipment = ShippmentFactory.shipment(products, inputOrder)
+    println("Shipment object is:")
+    val shipment = ShipmentFactory.getShipment(products, inputOrder)
     println(shipment)
     println()
 
-    println("shipment text:")
-    val shipmentText= ShippmentFactory.getShipmentText(shipment)
+    println("Shipment text:")
+    val shipmentText= ShipmentFactory.getShipmentText(shipment)
     println(shipmentText)
 }
 
