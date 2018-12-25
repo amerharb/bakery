@@ -1,5 +1,9 @@
 package com.amerharb.bakery
 
+import com.amerharb.bakery.factory.BakeryProductsFactory
+import com.amerharb.bakery.factory.InputOrderFactory
+import com.amerharb.bakery.factory.ShippmentFactory
+
 object BakeryApplication
 
 fun main() {

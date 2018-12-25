@@ -1,4 +1,4 @@
-package com.amerharb.bakery
+package com.amerharb.bakery.factory
 
 import com.amerharb.bakery.model.*
 import java.lang.StringBuilder
@@ -41,9 +41,9 @@ object ShippmentFactory {
         return if (packsRemainResult.isNotEmpty()) {
             val qpList = ArrayList<Shipment.Line.QtyPack>()
             for (qq in packsRemainResult.minBy { it.qtyList.size }!!.qtyList){
-                val alreadyExsistQtyPack = qpList.firstOrNull { it.pack.qty == qq }
-                if (alreadyExsistQtyPack != null){
-                    alreadyExsistQtyPack.qty++
+                val alreadyExistQtyPack = qpList.firstOrNull { it.pack.qty == qq }
+                if (alreadyExistQtyPack != null){
+                    alreadyExistQtyPack.qty++
                 } else {
                     qpList.add(Shipment.Line.QtyPack(1, packs.first { it.qty == qq }))
                 }

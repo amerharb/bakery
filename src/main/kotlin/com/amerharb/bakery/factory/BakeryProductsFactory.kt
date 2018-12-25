@@ -1,4 +1,4 @@
-package com.amerharb.bakery
+package com.amerharb.bakery.factory
 
 import com.amerharb.bakery.model.BakeryProducts
 import com.amerharb.bakery.model.Item
