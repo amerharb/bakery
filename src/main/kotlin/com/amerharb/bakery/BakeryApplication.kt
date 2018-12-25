@@ -10,7 +10,7 @@ object BakeryApplication
 fun main(arg: Array<String>) {
     //Arg are:
     //1. order file
-    //2. shippment filename for output, in case missing it will output to console
+    //2. shippment filename for output, in case missing it will output to console anyway
 
     println(getAsciiArt())
     println("Version: 0.3-SNAPSHOT")
@@ -22,7 +22,7 @@ fun main(arg: Array<String>) {
     println(products)
     println()
 
-    val inputText = if (arg.size > 0) {
+    val inputText = if (arg.size >= 1) {
         File(arg[0]).readText(Charsets.UTF_8)
     } else {
         println("Bakery Order read from Resource file [Input]")
@@ -44,6 +44,10 @@ fun main(arg: Array<String>) {
     println("Shipment text:")
     val shipmentText = ShipmentFactory.getShipmentText(shipment)
     println(shipmentText)
+
+    if (arg.size >= 2){
+        File(arg[1]).writeText(shipmentText)
+    }
 }
 
 fun getAsciiArt() = """
