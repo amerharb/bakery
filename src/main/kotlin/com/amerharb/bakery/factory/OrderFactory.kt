@@ -3,7 +3,7 @@ package com.amerharb.bakery.factory
 import com.amerharb.bakery.model.BakeryProducts
 import com.amerharb.bakery.model.Order
 
-object InputOrderFactory {
+object OrderFactory {
     fun fromText(bakeryProducts: BakeryProducts, text: String): Order {
         val list = ArrayList<Order.Line>()
         text.lines().forEach {

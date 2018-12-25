@@ -1,7 +1,7 @@
 package com.amerharb.bakery
 
 import com.amerharb.bakery.factory.BakeryProductsFactory
-import com.amerharb.bakery.factory.InputOrderFactory
+import com.amerharb.bakery.factory.OrderFactory
 import com.amerharb.bakery.factory.ShippmentFactory
 
 object BakeryApplication
@@ -21,7 +21,7 @@ fun main() {
     val inputText = BakeryApplication::class.java.getResource("Input").readText()
     println("the input text is:")
     println(inputText)
-    val inputOrder = InputOrderFactory.fromText(products, inputText)
+    val inputOrder = OrderFactory.fromText(products, inputText)
     println("the input object:")
     println(inputOrder)
     println()
