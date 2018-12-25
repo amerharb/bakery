@@ -1,11 +1,10 @@
 package com.amerharb.bakery.factory
 
 import com.amerharb.bakery.model.*
-import java.lang.StringBuilder
 
 object ShippmentFactory {
 
-    fun shipment(bakeryProducts: BakeryProducts, inputOrder: InputOrder): Shipment {
+    fun shipment(bakeryProducts: BakeryProducts, inputOrder: Order): Shipment {
         val shipmentLineList = ArrayList<Shipment.Line>()
         for (inputLine in inputOrder.inputList) {
             val packsSorted = bakeryProducts.products.first { it.item == inputLine.item }.packs.sortedByDescending { it.qty }
@@ -14,7 +13,7 @@ object ShippmentFactory {
         return Shipment(shipmentLineList)
     }
 
-    private fun getProductPacks(packs: List<Pack>, inputLine: InputOrder.Line): Shipment.Line {
+    private fun getProductPacks(packs: List<Pack>, inputLine: Order.Line): Shipment.Line {
         data class PackRemain(var total: Int = 0) {
             val qtyList = ArrayList<Int>()
         }

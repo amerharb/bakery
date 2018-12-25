@@ -1,5 +1,6 @@
 package com.amerharb.bakery.model
 
+import com.amerharb.bakery.exceptions.BakeryProductNotFoundException
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -10,19 +11,22 @@ data class Pack(val qty: Int, val price: BigDecimal)
 
 data class BakeryProducts(val products: List<Product>) {
     fun getItem(codeText: String): Item {
-        //TODO: catch exception: java.util.NoSuchElementException in case the codeText not found
-        return products.first { it.item.code == codeText }.item
+        try {
+            return products.first { it.item.code == codeText }.item
+        } catch (e: NoSuchElementException) {
+            throw BakeryProductNotFoundException ("Product not found for product code [$codeText]")
+        }
     }
 
     data class Product(val item: Item, val packs: List<Pack>)
 }
 
-data class InputOrder(val inputList: List<Line>) {
+data class Order(val inputList: List<Line>) {
     data class Line(val qty: Int, val item: Item)
 }
 
 data class Shipment(val outputList: List<Line>) {
-    data class Line(val inputLine: InputOrder.Line, val qtyPacks: List<QtyPack>) {
+    data class Line(val inputLine: Order.Line, val qtyPacks: List<QtyPack>) {
         val value: BigDecimal
             get() {
                 var bd = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)

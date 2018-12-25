@@ -22,6 +22,7 @@ fun main() {
     println("the input text is:")
     println(inputText)
     val inputOrder = InputOrderFactory.fromText(products, inputText)
+    println("the input object:")
     println(inputOrder)
     println()
 
