@@ -1,31 +1,58 @@
 package com.amerharb.bakery
 
-import com.amerharb.bakery.model.BakeryProducts
-import com.amerharb.bakery.model.CURRENCY_SYMBOL
-import com.amerharb.bakery.model.InputOrder
-import com.amerharb.bakery.model.Shipment
+import com.amerharb.bakery.model.*
 import java.lang.StringBuilder
 
 object ShippmentFactory {
 
-    fun getShipment(bakeryProducts: BakeryProducts, inputOrder: InputOrder): Shipment {
-        val list = ArrayList<Shipment.Line>()
+    fun shipment(bakeryProducts: BakeryProducts, inputOrder: InputOrder): Shipment {
+        val shipmentLineList = ArrayList<Shipment.Line>()
         for (inputLine in inputOrder.inputList) {
-            val packsSortedByQty = bakeryProducts.products.first { it.item == inputLine.item }.packs.sortedByDescending { it.qty }
-            var rem = inputLine.qty
-            val qpList = ArrayList<Shipment.Line.QtyPack>()
-            for (p in packsSortedByQty) { // from bigger to lesser
-                if (rem > p.qty) {
-                    val q = rem / p.qty
-                    rem -= (q * p.qty)
-                    val qp = Shipment.Line.QtyPack(q, p)
-                    qpList.add(qp)
+            val packsSorted = bakeryProducts.products.first { it.item == inputLine.item }.packs.sortedByDescending { it.qty }
+            shipmentLineList.add(getProductPacks(packsSorted, inputLine))
+        }
+        return Shipment(shipmentLineList)
+    }
+
+    private fun getProductPacks(packs: List<Pack>, inputLine: InputOrder.Line): Shipment.Line {
+        data class PackRemain(var total: Int = 0) {
+            val qtyList = ArrayList<Int>()
+        }
+
+        val packsRemainResult = ArrayList<PackRemain>()
+
+        fun findChangeRemain(packRemain: PackRemain) {
+            for (p in packs) {
+                if (packRemain.total > p.qty) {
+                    val total = packRemain.total - p.qty
+                    val newPackRemain = PackRemain(total)
+                    newPackRemain.qtyList.addAll(packRemain.qtyList)
+                    newPackRemain.qtyList.add(p.qty)
+                    findChangeRemain(newPackRemain)
+                } else if (packRemain.total == p.qty) {
+                    packRemain.total = 0
+                    packRemain.qtyList.add(p.qty)
+                    packsRemainResult.add(packRemain)
                 }
             }
-            if (rem != 0) throw Exception("invalid qty, qty the is required in order is not dividable to packs")
-            list.add(Shipment.Line(inputLine, qpList))
         }
-        return Shipment(list)
+        findChangeRemain(PackRemain(inputLine.qty))
+
+        return if (packsRemainResult.isNotEmpty()) {
+            val qpList = ArrayList<Shipment.Line.QtyPack>()
+            for (qq in packsRemainResult.minBy { it.qtyList.size }!!.qtyList){
+                val alreadyExsistQtyPack = qpList.firstOrNull { it.pack.qty == qq }
+                if (alreadyExsistQtyPack != null){
+                    alreadyExsistQtyPack.qty++
+                } else {
+                    qpList.add(Shipment.Line.QtyPack(1, packs.first { it.qty == qq }))
+                }
+            }
+            Shipment.Line(inputLine, qpList)
+        } else {
+            throw Exception("Invliad Packs sized for this order: \n packs: $packs\n" +
+                    "  input order: $inputLine ")
+        }
     }
 
     fun getShipmentText(shipment: Shipment): String {

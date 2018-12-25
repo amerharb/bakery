@@ -15,7 +15,7 @@ fun main() {
     println(inputOrder)
     println()
     println("shipment object:")
-    val shipment = ShippmentFactory.getShipment(products, inputOrder)
+    val shipment = ShippmentFactory.shipment(products, inputOrder)
     println(shipment)
     println()
     println("shipment text:")

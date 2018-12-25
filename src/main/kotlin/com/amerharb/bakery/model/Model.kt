@@ -3,7 +3,7 @@ package com.amerharb.bakery.model
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-val CURRENCY_SYMBOL = "$"
+const val CURRENCY_SYMBOL = "$"
 
 data class Item(val name: String, val code: String)
 data class Pack(val qty: Int, val price: BigDecimal)
@@ -30,7 +30,7 @@ data class Shipment(val outputList: List<Line>) {
                 return bd
             }
 
-        data class QtyPack(val qty: Int, val pack: Pack)
+        data class QtyPack(var qty: Int, val pack: Pack)
     }
 }
 
