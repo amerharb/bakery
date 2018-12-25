@@ -3,10 +3,15 @@ package com.amerharb.bakery
 import com.amerharb.bakery.factory.BakeryProductsFactory
 import com.amerharb.bakery.factory.OrderFactory
 import com.amerharb.bakery.factory.ShipmentFactory
+import java.io.File
 
 object BakeryApplication
 
-fun main() {
+fun main(arg: Array<String>) {
+    //Arg are:
+    //1. order file
+    //2. shippment filename for output, in case missing it will output to console
+
     println(getAsciiArt())
     println("Version: 0.3-SNAPSHOT")
     println()
@@ -17,8 +22,12 @@ fun main() {
     println(products)
     println()
 
-    println("Bakery Order read from Resource file [Input]")
-    val inputText = BakeryApplication::class.java.getResource("Input").readText()
+    val inputText = if (arg.size > 0) {
+        File(arg[0]).readText(Charsets.UTF_8)
+    } else {
+        println("Bakery Order read from Resource file [Input]")
+        BakeryApplication::class.java.getResource("Input").readText()
+    }
     println("the input text is:")
     println(inputText)
     val inputOrder = OrderFactory.fromText(products, inputText)
@@ -33,7 +42,7 @@ fun main() {
     println()
 
     println("Shipment text:")
-    val shipmentText= ShipmentFactory.getShipmentText(shipment)
+    val shipmentText = ShipmentFactory.getShipmentText(shipment)
     println(shipmentText)
 }
 
