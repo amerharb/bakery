@@ -7,22 +7,43 @@ import com.amerharb.bakery.factory.ShippmentFactory
 object BakeryApplication
 
 fun main() {
-    println("Hello World, Bakery Application")
+    println(getAsciiArt())
+    println("Version: 0.3-SNAPSHOT")
+    println()
+
+    println("Bakery Products is hard coded in the app")
     val products = BakeryProductsFactory.getHardCoded()
-    println("BakeryProductsFactory is:")
+    println("BakeryProducts Object is:")
     println(products)
     println()
+
+    println("Bakery Order read from Resource file [Input]")
     val inputText = BakeryApplication::class.java.getResource("Input").readText()
     println("the input text is:")
     println(inputText)
     val inputOrder = InputOrderFactory.fromText(products, inputText)
     println(inputOrder)
     println()
-    println("shipment object:")
+
+    println("calculating Shipment Object ...")
+    println("shipment object is:")
     val shipment = ShippmentFactory.shipment(products, inputOrder)
     println(shipment)
     println()
+
     println("shipment text:")
     val shipmentText= ShippmentFactory.getShipmentText(shipment)
     println(shipmentText)
 }
+
+fun getAsciiArt() = """
+______         _
+| ___ \       | |
+| |_/ /  __ _ | | __  ___  _ __  _   _
+| ___ \ / _` || |/ / / _ \| '__|| | | |
+| |_/ /| (_| ||   < |  __/| |   | |_| |
+\____/  \__,_||_|\_\ \___||_|    \__, |
+                                  __/ |
+                                 |___/
+---------------------------------------
+""".trimIndent()
