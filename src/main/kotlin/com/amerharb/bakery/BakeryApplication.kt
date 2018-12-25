@@ -16,7 +16,7 @@ fun main(arg: Array<String>) {
     println("Version: 0.3-SNAPSHOT")
     println()
 
-    println("Bakery Products is hard coded in the app")
+    println("Bakery Products is hard coded")
     val products = BakeryProductsFactory.getHardCoded()
     println("BakeryProducts Object is:")
     println(products)
@@ -45,8 +45,14 @@ fun main(arg: Array<String>) {
     val shipmentText = ShipmentFactory.getShipmentText(shipment)
     println(shipmentText)
 
-    if (arg.size >= 2){
-        File(arg[1]).writeText(shipmentText)
+    if (arg.size >= 2) {
+        try {
+            File(arg[1]).writeText(shipmentText)
+            println("Shipment as text file written to [${arg[1]}]")
+        } catch (e:Exception) {
+            println("error during writing shipment to the output file")
+            println(e.message)
+        }
     }
 }
 
