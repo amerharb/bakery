@@ -1,5 +1,6 @@
 package com.amerharb.bakery.factory
 
+import com.amerharb.bakery.exceptions.BakeryInvalidPacksSizesException
 import com.amerharb.bakery.model.*
 
 object ShippmentFactory {
@@ -49,7 +50,7 @@ object ShippmentFactory {
             }
             Shipment.Line(inputLine, qpList)
         } else {
-            throw Exception("Invliad Packs sized for this order: \n packs: $packs\n" +
+            throw BakeryInvalidPacksSizesException("Invliad Packs sizes for this order: \n packs: $packs\n" +
                     "  input order: $inputLine ")
         }
     }
