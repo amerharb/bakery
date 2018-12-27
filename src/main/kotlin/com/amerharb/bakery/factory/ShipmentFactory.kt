@@ -5,16 +5,16 @@ import com.amerharb.bakery.model.*
 
 object ShipmentFactory {
 
-    fun getShipment(bakeryProducts: BakeryProducts, inputOrder: Order): Shipment {
+    fun getShipment(bakeryProducts: BakeryProducts, order: Order): Shipment {
         val shipmentLineList = ArrayList<Shipment.Line>()
-        for (inputLine in inputOrder.inputList) {
-            val packsSorted = bakeryProducts.products.first { it.item == inputLine.item }.packs.sortedByDescending { it.qty }
-            shipmentLineList.add(getProductPacks(packsSorted, inputLine))
+        for (line in order.lines) {
+            val packsSorted = bakeryProducts.products.first { it.item == line.item }.packs.sortedByDescending { it.qty }
+            shipmentLineList.add(getProductPacks(packsSorted, line))
         }
         return Shipment(shipmentLineList)
     }
 
-    private fun getProductPacks(packs: List<Pack>, inputLine: Order.Line): Shipment.Line {
+    private fun getProductPacks(packs: List<Pack>, line: Order.Line): Shipment.Line {
         data class PackRemain(var total: Int = 0) {
             val qtyList = ArrayList<Int>()
         }
@@ -36,7 +36,7 @@ object ShipmentFactory {
                 }
             }
         }
-        findChangeRemain(PackRemain(inputLine.qty))
+        findChangeRemain(PackRemain(line.qty))
 
         return if (packsRemainResult.isNotEmpty()) {
             val qpList = ArrayList<Shipment.Line.QtyPack>()
@@ -48,17 +48,17 @@ object ShipmentFactory {
                     qpList.add(Shipment.Line.QtyPack(1, packs.first { it.qty == qq }))
                 }
             }
-            Shipment.Line(inputLine, qpList)
+            Shipment.Line(line, qpList)
         } else {
             throw BakeryInvalidPacksSizesException("Invliad Packs sizes for this order: \n packs: $packs\n" +
-                    "  input order: $inputLine ")
+                    "  input order: $line ")
         }
     }
 
     fun getShipmentText(shipment: Shipment): String {
         val sb = StringBuilder()
-        for (line in shipment.outputList) {
-            sb.appendln("${line.inputLine.qty} ${line.inputLine.item.code} $CURRENCY_SYMBOL${line.value}")
+        for (line in shipment.lines) {
+            sb.appendln("${line.orderLine.qty} ${line.orderLine.item.code} $CURRENCY_SYMBOL${line.value}")
             for (qp in line.qtyPacks) {
                 sb.appendln("\t${qp.qty} x ${qp.pack.qty} $CURRENCY_SYMBOL ${qp.pack.price}")
             }

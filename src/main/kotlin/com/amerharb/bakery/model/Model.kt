@@ -21,12 +21,12 @@ data class BakeryProducts(val products: List<Product>) {
     data class Product(val item: Item, val packs: List<Pack>)
 }
 
-data class Order(val inputList: List<Line>) {
+data class Order(val lines: List<Line>) {
     data class Line(val qty: Int, val item: Item)
 }
 
-data class Shipment(val outputList: List<Line>) {
-    data class Line(val inputLine: Order.Line, val qtyPacks: List<QtyPack>) {
+data class Shipment(val lines: List<Line>) {
+    data class Line(val orderLine: Order.Line, val qtyPacks: List<QtyPack>) {
         val value: BigDecimal
             get() {
                 var bd = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)

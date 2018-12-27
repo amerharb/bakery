@@ -1,6 +1,7 @@
 package com.amerharb.bakery.factory
 
 import com.amerharb.bakery.model.BakeryProducts
+import com.amerharb.bakery.model.CURRENCY_SYMBOL
 import com.amerharb.bakery.model.Item
 import com.amerharb.bakery.model.Pack
 import java.math.BigDecimal
@@ -29,5 +30,16 @@ object BakeryProductsFactory {
         list.add(BakeryProducts.Product(Item("Croissant", "CF"), tempPackList))
 
         return BakeryProducts(list)
+    }
+
+    fun getProductText(bakeryProducts: BakeryProducts): String {
+        val sb = StringBuilder()
+        for (prod in bakeryProducts.products) {
+            sb.appendln("${prod.item.name}\t${prod.item.code}")
+            for (pack in prod.packs) {
+                sb.appendln("\t${pack.qty} @ $CURRENCY_SYMBOL${pack.price}")
+            }
+        }
+        return sb.toString()
     }
 }
