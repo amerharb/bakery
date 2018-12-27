@@ -17,21 +17,23 @@ object BakeryApplication {
         println("Version: 0.4.4")
         println()
 
-        println("Bakery Products is hard coded")
+        println("Bakery products source :[hard coded]")
         val products = BakeryProductsFactory.getHardCoded()
 //        println("BakeryProducts Object is:")
 //        println(products)
 //        println()
+        println()
         println("producs are :")
-        println("Name\tCode")
         println(getProductText(products))
 
         val inputText = if (arg.size >= 1) {
+            println("Bakery order reading from file [${arg[0]}]")
             File(arg[0]).readText(Charsets.UTF_8)
         } else {
-            println("Bakery Order read from Resource file [Input]")
+            println("Bakery order read from resource file [Input]")
             BakeryApplication::class.java.getResource("Input").readText()
         }
+        println()
         println("the input text is:")
         println(inputText)
         val inputOrder = OrderFactory.fromText(products, inputText)
@@ -39,12 +41,14 @@ object BakeryApplication {
 //            println(inputOrder)
 //            println()
 
+        println()
         println("calculating Shipment ...")
         val shipment = ShipmentFactory.getShipment(products, inputOrder)
 //            println("Shipment object is:")
 //            println(shipment)
 //            println()
 
+        println()
         println("Shipment text:")
         val shipmentText = ShipmentFactory.getShipmentText(shipment)
         println(shipmentText)

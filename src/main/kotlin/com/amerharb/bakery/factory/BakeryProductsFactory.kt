@@ -35,7 +35,7 @@ object BakeryProductsFactory {
     fun getProductText(bakeryProducts: BakeryProducts): String {
         val sb = StringBuilder()
         for (prod in bakeryProducts.products) {
-            sb.appendln("${prod.item.name}\t${prod.item.code}")
+            sb.appendln("${prod.item.name} (${prod.item.code})")
             for (pack in prod.packs) {
                 sb.appendln("\t${pack.qty} @ $CURRENCY_SYMBOL${pack.price}")
             }
