@@ -26,6 +26,13 @@ data class Order(val lines: List<Line>) {
 }
 
 data class Shipment(val lines: List<Line>) {
+    val value: BigDecimal
+    get() {
+        var bd = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)
+        lines.forEach { bd = bd.add(it.value) }
+        return bd
+    }
+
     data class Line(val orderLine: Order.Line, val qtyPacks: List<QtyPack>) {
         val value: BigDecimal
             get() {

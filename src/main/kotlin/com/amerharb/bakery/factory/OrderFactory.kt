@@ -7,11 +7,13 @@ object OrderFactory {
     fun fromText(bakeryProducts: BakeryProducts, text: String): Order {
         val list = ArrayList<Order.Line>()
         text.lines().forEach {
-            val lineSplit = it.split(" ")
-            val qty = lineSplit[0].toInt()
-            val codeText = lineSplit[1]
-            val item = bakeryProducts.getItem(codeText)
-            list.add(Order.Line(qty, item))
+            if (it.isNotBlank()) {
+                val lineSplit = it.split(" ")
+                val qty = lineSplit[0].toInt()
+                val codeText = lineSplit[1]
+                val item = bakeryProducts.getItem(codeText)
+                list.add(Order.Line(qty, item))
+            }
         }
         return Order(list)
     }

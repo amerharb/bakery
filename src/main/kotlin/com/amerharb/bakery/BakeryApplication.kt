@@ -1,5 +1,6 @@
 package com.amerharb.bakery
 
+import com.amerharb.bakery.exceptions.BakeryInvalidPacksSizesException
 import com.amerharb.bakery.factory.BakeryProductsFactory
 import com.amerharb.bakery.factory.BakeryProductsFactory.getProductText
 import com.amerharb.bakery.factory.OrderFactory
@@ -43,25 +44,28 @@ object BakeryApplication {
 
         println()
         println("calculating Shipment ...")
-        val shipment = ShipmentFactory.getShipment(products, inputOrder)
-//            println("Shipment object is:")
-//            println(shipment)
-//            println()
+        try {
+            val shipment = ShipmentFactory.getShipment(products, inputOrder)
+            println()
+            println("Shipment text:")
+            val shipmentText = ShipmentFactory.getShipmentText(shipment)
+            println(shipmentText)
 
-        println()
-        println("Shipment text:")
-        val shipmentText = ShipmentFactory.getShipmentText(shipment)
-        println(shipmentText)
-
-        if (arg.size >= 2) {
-            try {
-                File(arg[1]).writeText(shipmentText)
-                println("Shipment as text file written to [${arg[1]}]")
-            } catch (e: Exception) {
-                println("error during writing shipment to the output file")
-                println(e.message)
+            if (arg.size >= 2) {
+                try {
+                    File(arg[1]).writeText(shipmentText)
+                    println("Shipment as text file written to [${arg[1]}]")
+                } catch (e: Exception) {
+                    println("error during writing shipment to the output file")
+                    println(e.message)
+                }
             }
+
+        } catch (e: BakeryInvalidPacksSizesException) {
+            println("ERROR: the order qty is invalid for this product packs sizes")
+            println(e.message)
         }
+
     }
 
     fun getAsciiArt() = """

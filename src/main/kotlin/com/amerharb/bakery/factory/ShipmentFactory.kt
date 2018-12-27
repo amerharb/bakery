@@ -9,12 +9,12 @@ object ShipmentFactory {
         val shipmentLineList = ArrayList<Shipment.Line>()
         for (line in order.lines) {
             val packsSorted = bakeryProducts.products.first { it.item == line.item }.packs.sortedByDescending { it.qty }
-            shipmentLineList.add(getProductPacks(packsSorted, line))
+                shipmentLineList.add(getProductPacks(packsSorted, line))
         }
         return Shipment(shipmentLineList)
     }
 
-    private fun getProductPacks(packs: List<Pack>, line: Order.Line): Shipment.Line {
+    private fun getProductPacks(packs: List<Pack>, orderLine: Order.Line): Shipment.Line {
         data class PackRemain(var total: Int = 0) {
             val qtyList = ArrayList<Int>()
         }
@@ -36,7 +36,7 @@ object ShipmentFactory {
                 }
             }
         }
-        findChangeRemain(PackRemain(line.qty))
+        findChangeRemain(PackRemain(orderLine.qty))
 
         return if (packsRemainResult.isNotEmpty()) {
             val qpList = ArrayList<Shipment.Line.QtyPack>()
@@ -48,10 +48,10 @@ object ShipmentFactory {
                     qpList.add(Shipment.Line.QtyPack(1, packs.first { it.qty == qq }))
                 }
             }
-            Shipment.Line(line, qpList)
+            Shipment.Line(orderLine, qpList)
         } else {
             throw BakeryInvalidPacksSizesException("Invliad Packs sizes for this order: \n packs: $packs\n" +
-                    "  input order: $line ")
+                    "  input order: $orderLine ", orderLine = orderLine, productPacks = packs)
         }
     }
 
@@ -63,6 +63,8 @@ object ShipmentFactory {
                 sb.appendln("\t${qp.qty} x ${qp.pack.qty} $CURRENCY_SYMBOL ${qp.pack.price}")
             }
         }
+        sb.appendln()
+        sb.appendln("Shipment total value : $CURRENCY_SYMBOL ${shipment.value}")
         return sb.toString()
     }
 }
