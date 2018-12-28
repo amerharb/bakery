@@ -30,15 +30,12 @@ object BakeryApplication {
             BakeryProductsFactory.getHardCoded()
         }
 
-//        println("BakeryProducts Object is:")
-//        println(products)
-//        println()
         println()
         println("producs are :")
         println(getProductText(products))
 
         try {
-            val inputText = if (arg.size >= 1) {
+            val inputText = if (arg.size >= 1 && arg[0] != "_") {
                 println("Bakery order reading from file [${arg[0]}]")
                 File(arg[0]).readText(Charsets.UTF_8)
             } else {
@@ -49,9 +46,6 @@ object BakeryApplication {
             println("the input text is:")
             println(inputText)
             val inputOrder = OrderFactory.fromText(products, inputText)
-//            println("the input object:")
-//            println(inputOrder)
-//            println()
 
             println()
             println("calculating Shipment ...")
