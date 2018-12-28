@@ -9,7 +9,7 @@ object OrderFactory {
         val list = ArrayList<Order.Line>()
         text.lines().forEach {
             if (it.isNotBlank()) {
-                val lineSplit = it.split(" ")
+                val lineSplit = it.trim().split(" ")
                 if (lineSplit.isValidLine) {
                     val qty = lineSplit[0].toInt()
                     val codeText = lineSplit[1]

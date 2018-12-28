@@ -16,7 +16,7 @@ object BakeryApplication {
         //2. shipment filename for output, in case missing it will output to console anyway
 
         println(getAsciiArt())
-        println("Version: 0.4.5")
+        println("Version: 0.4.6-SNAPSHOT")
         println()
 
         println("Bakery products source :[hard coded]")
